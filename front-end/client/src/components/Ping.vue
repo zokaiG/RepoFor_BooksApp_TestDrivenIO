@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p> {{message}} </p>
+  <div class="container">
+    <button type="button" class="btn btn-primary"> {{message}} </button>
   </div>
 </template>
 
