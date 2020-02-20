@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 # Configuration
@@ -11,7 +11,7 @@ app.config.from_object(__name__)
 # Enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-Books = [
+books = [
     {
         'title': 'On the Road',
         'author': 'Jack Kerouac',
@@ -36,12 +36,21 @@ def ping_pong():
     return jsonify('pong!')
 
 
-@app.route('/books', methods=['GET'])
+@app.route('/books', methods=['GET', 'POST'])
 def all_books():
-    return jsonify({
-        'status': 'success',
-        'books': Books
-    })
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        post_data = request.get_json()
+        books.append({
+            'title': post_data.get('title'),
+            'author': post_data.get('author'),
+            'read': post_data.get('read')
+        })
+        response_object['message'] = 'Book Added!'
+    else:
+        response_object['books'] = books
+
+    return jsonify(response_object)
 
 
 if __name__ == '__main__':
