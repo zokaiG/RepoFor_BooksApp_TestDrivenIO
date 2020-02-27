@@ -4,7 +4,8 @@
             <div class="col-sm-10">
                 <h1>Books</h1>
                 <hr><br><br>
-                <alert :message="message" v-if="showMessage" @reset-alert="resetAlert"></alert>
+                <alert :message="message" :variant="messageVariant" v-if="showMessage"
+                        @reset-alert="resetAlert"></alert>
                 <button type="button" class="btn btn-success btn-sm"
                         v-b-modal.book-modal>Add Book</button>
                 <br><br>
@@ -113,6 +114,7 @@ export default {
       },
       message: '',
       showMessage: false,
+      messageVariant: 'warning',
     };
   },
   components: {
@@ -128,6 +130,9 @@ export default {
         .catch((error) => {
           // eslint-disable-next-line
           console.log(error);
+          this.message = 'Ops... Something went wrong with the server.';
+          this.showMessage = true;
+          this.messageVariant = 'danger';
         });
     },
     addBook(payload) {
@@ -137,11 +142,15 @@ export default {
           this.getBooks();
           this.message = 'Book added!';
           this.showMessage = true;
+          this.messageVariant = 'success';
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.log(error);
           this.getBooks();
+          this.message = 'Ops... Something went wrong with the server.';
+          this.showMessage = true;
+          this.messageVariant = 'danger';
         });
     },
     initForm() {
@@ -193,11 +202,15 @@ export default {
           this.getBooks();
           this.message = 'Book updated!';
           this.showMessage = true;
+          this.messageVariant = 'success';
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.log(error);
           this.getBooks();
+          this.message = 'Ops... Something went wrong with the server.';
+          this.showMessage = true;
+          this.messageVariant = 'danger';
         });
     },
     onResetUpdate(evt) {
@@ -213,11 +226,15 @@ export default {
           this.getBooks();
           this.message = 'Book removed!';
           this.showMessage = true;
+          this.messageVariant = 'success';
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.log(error);
           this.getBooks();
+          this.message = 'Ops... Something went wrong with the server.';
+          this.showMessage = true;
+          this.messageVariant = 'danger';
         });
     },
     onDeleteBook(book) {
@@ -225,6 +242,8 @@ export default {
     },
     resetAlert() {
       this.showMessage = false;
+      this.message = 'Ops... Something went wrong...';
+      this.messageVariant = 'danger';
     },
   },
   created() {
